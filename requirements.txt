@@ -1,0 +1,6 @@
+pandas
+nltk
+textblob
+matplotlib
+tqdm
+pytest
