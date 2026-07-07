@@ -27,4 +27,17 @@ def build_reviews_csv(output_path: Path) -> None:
 
 
 def load_reviews(csv_path: Path) -> pd.DataFrame:
-    return pd.read_csv(csv_path)
+    if not csv_path.exists():
+        raise FileNotFoundError(
+            f"{csv_path} not found. Run build_reviews_csv() first or place a "
+            "CSV with a 'review' column there."
+        )
+
+    df = pd.read_csv(csv_path)
+
+    if "review" not in df.columns:
+        raise ValueError("CSV file must contain a 'review' column.")
+
+    df = df.dropna(subset=["review"]).copy()
+    df["review"] = df["review"].astype(str)
+    return df
